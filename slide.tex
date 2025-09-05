@@ -1,5 +1,6 @@
 \documentclass[aspectratio=169,AutoFakeBold]{beamer}
 \usepackage{ctex,hyperref}
+\usepackage{bookmark}
 \usepackage[T1]{fontenc}
 \usepackage{latexsym,amsmath,xcolor,multicol,booktabs,calligra}
 \usepackage{graphicx,pstricks,listings,stackengine,gbt7714,tikz}
@@ -54,11 +55,11 @@
 \end{frame}
 
 % ------------------------------------------
-%     新的章节结构
+%     新的章节结构  
 % ------------------------------------------
 \section{汇报背景与目标}
 \begin{frame}{课题背景与目标}
-    \begin{itemize}[<+-| alert@+>]
+    \begin{itemize}
         \item 导师布置任务：阅读三篇核心论文（A/B/C）
         \item 学习目标：
             \begin{itemize}
@@ -72,27 +73,37 @@
 
 \section{三篇论文概览}
 \begin{frame}{论文核心内容分析}
-    \begin{block}{论文A：Data processing techniques for modern multimodal models}
-        \begin{itemize}
-            \item 数据质量
-            \item 数据数量
-            \item 数据分布
-            \item 数据安全
-        \end{itemize}
-    \end{block}
-
-    \begin{block}{论文B：A Survey of Multimodal Large Language Model from A Data-centric Perspective}
-        \begin{itemize}
-            \item 亮点：从以数据为中心的视角下研究多模态大模型的预训练、数据准备以及数据集的评估方法
-            \item 疑问：训练数据集的构建方法
-        \end{itemize}
-    \end{block}
-    \begin{block}{论文C：A Multimodal Large Language Model Framework for Intelligent Perception and Decision-Making in Smart Manufacturing}
-        \begin{itemize}
-            \item 亮点：从以数据为中心的视角下研究多模态大模型的预训练、数据准备以及数据集的评估方法
-            \item 疑问：训练数据集的构建方法
-        \end{itemize}
-    \end{block}
+    % 第1步显示：仅论文A
+    \only<1>{
+        \begin{block}{论文A：Data processing techniques for modern multimodal models}
+            \begin{itemize}
+                \item 数据质量
+                \item 数据数量
+                \item 数据分布
+                \item 数据安全
+            \end{itemize}
+        \end{block}
+    }
+    
+    % 第2步显示：仅论文B
+    \only<2>{
+        \begin{block}{论文B：A Survey of Multimodal Large Language Model from A Data-centric Perspective}
+            \begin{itemize}
+                \item 亮点：从以数据为中心的视角下研究多模态大模型的预训练、数据准备以及数据集的评估方法
+                \item 疑问：训练数据集的构建方法
+            \end{itemize}
+        \end{block}
+    }
+    
+    % 第3步显示：仅论文C
+    \only<3>{
+        \begin{block}{论文C：A Multimodal Large Language Model Framework for Intelligent Perception and Decision-Making in Smart Manufacturing}
+            \begin{itemize}
+                \item 亮点：从以数据为中心的视角下研究多模态大模型的预训练、数据准备以及数据集的评估方法
+                \item 疑问：训练数据集的构建方法
+            \end{itemize}
+        \end{block}
+    }
 \end{frame}
 
 \section{查漏补缺与学习路径}
@@ -183,8 +194,8 @@
 \end{frame}
 
 
-\section{Q&A}
-\begin{frame}{Q&A}
+\section{Q\&A}
+\begin{frame}{Q\&A}
     
 \end{frame}
 
