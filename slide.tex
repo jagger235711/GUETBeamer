@@ -65,7 +65,7 @@
             \begin{itemize}
                 \item 了解深度学习基础知识
                 \item 了解多模态的数据处理技术
-                \item 了解多模态大模型的预训练方法
+                \item 了解多模态大模型的预训练方法、数据准备以及数据集的评估方法
                 \item 了解专为智能制造应用设计的多模态大模型系统
             \end{itemize}
     \end{itemize}
@@ -92,6 +92,12 @@
                 \item 亮点：从以数据为中心的视角下研究多模态大模型的预训练、数据准备以及数据集的评估方法
                 \item 疑问：训练数据集的构建方法
             \end{itemize}
+            ----------------------------
+            \begin{itemize}
+                \item “如何收集,选择和管理MLLM的数据”
+                \item “数据如何影响MLLM的性能” 
+                \item “如何评估MLLM的数据” 
+            \end{itemize}
         \end{block}
     }
     
@@ -99,8 +105,9 @@
     \only<3>{
         \begin{block}{论文C：A Multimodal Large Language Model Framework for Intelligent Perception and Decision-Making in Smart Manufacturing}
             \begin{itemize}
-                \item 亮点：从以数据为中心的视角下研究多模态大模型的预训练、数据准备以及数据集的评估方法
-                \item 疑问：训练数据集的构建方法
+                \item 一种统一的方法，用于表示不同的数据类型，动态语义令牌化，以进行更好的数据处理，跨模态的强大对齐策略
+                \item 一种实用的两阶段训练方法，涉及初始大规模预处理以及以后进行特定任务进行微调。
+                \item 引入了一种基于Transformer的新型模型,用于生成图像和文本,从而显着提高了实时决策能力。
             \end{itemize}
         \end{block}
     }
@@ -112,7 +119,7 @@
         \begin{column}{.5\textwidth}
             \begin{block}{关键知识盲点}
                 \begin{itemize}
-                    \item Transformer网络结构与原理
+                    \item 包括Transformer在内的经典网络结构与原理
                     \item 数据预处理方法
                     \item 多模态数据融合策略
                     \item 多模态大模型训练技巧
@@ -128,67 +135,42 @@
             \end{block}
         \end{column}
     \end{columns}
-
-    \vspace{1em}
-    \centering
-    \begin{tikzpicture}[node distance=1.5cm]
-        \node[draw] (start) {论文阅读};
-        \node[draw, below left of=start] (math) {数学基础};
-        \node[draw, below right of=start] (code) {代码实践};
-        \draw[->] (start) -- (math);
-        \draw[->] (start) -- (code);
-    \end{tikzpicture}
 \end{frame}
 
-\section{知识框架总结}
-\begin{frame}{知识体系构建}
-    \centering
-    \begin{tikzpicture}[node distance=2cm]
-        \node[draw, rounded corners] (core) {核心论文};
-        \node[draw, below left of=core] (math) {最优化理论};
-        \node[draw, below right of=core] (dl) {深度学习};
-        \draw[->] (core) -- (math) node[midway,left] {数学基础};
-        \draw[->] (core) -- (dl) node[midway,right] {实现手段};
-        \node[draw, below of=math] (gan) {GAN原理};
-        \node[draw, below of=dl] (cv) {计算机视觉};
-    \end{tikzpicture}
-\end{frame}
-
-\section{收获与不足}
-\begin{frame}{阶段性成果}
-    \begin{textbox}{已掌握技能}
-        \begin{itemize}
-            \item GAN网络结构与训练技巧
-            \item 色彩空间转换原理（RGB/Lab）
-            \item 图像质量评估指标（PSNR/SSIM）
-        \end{itemize}
-    \end{textbox}
+% \section{收获与不足}
+% \begin{frame}{阶段性成果}
+%     \begin{textbox}{已掌握技能}
+%         \begin{itemize}
+%             \item GAN网络结构与训练技巧
+%             \item 色彩空间转换原理（RGB/Lab）
+%             \item 图像质量评估指标（PSNR/SSIM）
+%         \end{itemize}
+%     \end{textbox}
     
-    \begin{textbox}{待解决问题}
-        \begin{itemize}
-            \item 多模态融合策略
-            \item 小样本条件下的模型泛化
-        \end{itemize} 
-    \end{textbox}
-\end{frame}
+%     \begin{textbox}{待解决问题}
+%         \begin{itemize}
+%             \item 多模态融合策略
+%             \item 小样本条件下的模型泛化
+%         \end{itemize} 
+%     \end{textbox}
+% \end{frame}
 
 \section{下一步计划}
 \begin{frame}{后续研究规划}
     \begin{enumerate}
-        \item \textbf{文献拓展}
+        \item \textbf{知识拓展}
             \begin{itemize}
-                \item 精读CVPR最新图像上色论文
-                \item 研究多模态融合前沿方法
+                \item 学习相关课程如 CS 329P
+                \item 了解多模态融合前沿方法
             \end{itemize}
         \item \textbf{实践计划}
             \begin{itemize}
-                \item 复现论文核心算法
-                \item 构建自定义数据集
+                \item 复现课程代码
             \end{itemize}
         \item \textbf{理论深化}
             \begin{itemize}
-                \item 学习流形学习理论
-                \item 研究色彩空间映射数学基础
+                \item 学习经典网络架构
+                \item 补充知识盲区
             \end{itemize}
     \end{enumerate}
 \end{frame}
@@ -196,7 +178,12 @@
 
 \section{Q\&A}
 \begin{frame}{Q\&A}
-    
+    \begin{itemize}
+            \item 怎么找到合适的论文？
+            \item 怎么样读论文？
+            \item 怎么样做笔记？
+            \item 怎么样写论文？
+        \end{itemize} 
 \end{frame}
 
 \begin{frame}
