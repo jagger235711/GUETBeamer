@@ -8,7 +8,7 @@
 %     标题页
 % ------------------------------------------
 \author{汇报人：巫文杰 \texorpdfstring{\quad}{} 指导教师：曹建宇}
-\title{周工作汇报}
+\title{双周工作汇报}
 % \subtitle{毕业设计答辩}
 \institute{计算机与信息安全学院}
 \date{\today}
@@ -57,136 +57,154 @@
 % ------------------------------------------
 %     新的章节结构  
 % ------------------------------------------
-\section{汇报背景与目标}
+\section{汇报简介与目标论文背景}
 \begin{frame}{Introduction}
     \small
     在第一次汇报中，第三篇论文的内容没有完全展开，此次将针对第三篇论文进行更详细的介绍，并结合上次导师的反馈，对汇报的内容和格式进行进一步的优化。
 \end{frame}
-\begin{frame}{课题背景与目标}
+\begin{frame}{研究背景}
+    % \begin{itemize}[<+->] % 逐项显示动画效果
+    \begin{itemize}    
+      \item \textbf{领域大图景}：
+        \begin{itemize}
+            \item 智能制造通过多源数据（图像、传感器、生产记录）实现实时决策
+            \item 传统单模态方法存在数据隔离和整合困难的问题
+        \end{itemize}
+        
+        \vspace{0.5cm} % 增加垂直间距
+        
+        \item \textbf{重要性}：
+        \begin{itemize}
+            \item 工业4.0要求系统具备多模态感知能力
+            \item 据报告，预计到2032年全球智能制造市场将超\textbf{9989.9亿美元}
+            \item  \url{https://www.fortunebusinessinsights.com/zh/smart-manufacturing-market-103594}
+            
+        \end{itemize}
+        
+        \vspace{0.5cm}
+        
+        \item \textbf{趋势与挑战}：
+        \begin{itemize}
+            \item 多模态数据量剧增，但现有方法难以实现跨模态语义对齐
+            \item 导致决策延迟和误差
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{问题定义}
+\begin{frame}{核心问题与难点}  
+    \begin{block}{核心问题}
+        如何有效融合智能制造中的多源异构数据（图像、传感器、文本）以提升实时决策精度？
+    \end{block}
+    \vspace{0.3cm}
+    \textbf{主要难点：}
     \begin{itemize}
-        \item 导师布置任务：阅读三篇核心论文（A/B/C）
-        \item 学习目标：
+        \item 模态间数据格式差异显著：
             \begin{itemize}
-                \item 了解深度学习基础知识
-                \item 了解多模态的数据处理技术
-                \item 了解多模态大模型的预训练方法、数据准备以及数据集的评估方法
-                \item 了解专为智能制造应用设计的多模态大模型系统
+                \item 图像数据为像素矩阵
+                \item 传感器数据是时序数值
+                \item 文本数据是非结构化语义
+            \end{itemize}
+        \item 跨模态语义对齐困难：
+            \begin{itemize}
+                \item 传统方法难以建立不同模态间的语义关联
+                \item 导致信息孤立，无法形成决策闭环
             \end{itemize}
     \end{itemize}
 \end{frame}
 
-\section{三篇论文概览}
-\begin{frame}{论文核心内容分析}
-    % 第1步显示：仅论文A
-    \only<1>{
-        \begin{block}{论文A：Data processing techniques for modern multimodal models}
-            \begin{itemize}
-                \item 数据质量
-                \item 数据数量
-                \item 数据分布
-                \item 数据安全
-            \end{itemize}
-        \end{block}
-    }
-    
-    % 第2步显示：仅论文B
-    \only<2>{
-        \begin{block}{论文B：A Survey of Multimodal Large Language Model from A Data-centric Perspective}
-            \begin{itemize}
-                \item 亮点：从以数据为中心的视角下研究多模态大模型的预训练、数据准备以及数据集的评估方法
-                \item 疑问：训练数据集的构建方法
-            \end{itemize}
-            ----------------------------
-            \begin{itemize}
-                \item “如何收集,选择和管理MLLM的数据”
-                \item “数据如何影响MLLM的性能” 
-                \item “如何评估MLLM的数据” 
-            \end{itemize}
-        \end{block}
-    }
-    
-    % 第3步显示：仅论文C
-    \only<3>{
-        \begin{block}{论文C：A Multimodal Large Language Model Framework for Intelligent Perception and Decision-Making in Smart Manufacturing}
-            \begin{itemize}
-                \item 一种统一的方法，用于表示不同的数据类型，动态语义令牌化，以进行更好的数据处理，跨模态的强大对齐策略
-                \item 一种实用的两阶段训练方法，涉及初始大规模预处理以及以后进行特定任务进行微调。
-                \item 引入了一种基于Transformer的新型模型,用于生成图像和文本,从而显着提高了实时决策能力。
-            \end{itemize}
-        \end{block}
-    }
+\section{研究方法}
+\begin{frame}{方法创新}
+    % 1. 现有方法局限性：用灰色背景区块区分，突出“问题”属性
+    \begin{block}{现有方法局限性}
+        \begin{itemize}
+            \item 单模态分析局限：仅针对单一数据类型（如纯图像或纯文本处理），无法捕捉跨模态关联信息；
+            \item 表征方法缺陷：缺乏动态 tokenization 机制，且未形成统一的多模态表征框架。
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\section{查漏补缺与学习路径}
-\begin{frame}{知识盲点与学习路径}
-    \begin{columns}[T]
-        \begin{column}{.5\textwidth}
-            \begin{block}{关键知识盲点}
-                \begin{itemize}
-                    \item 包括Transformer在内的经典网络结构与原理
-                    \item 数据预处理方法
-                    \item 多模态数据融合策略
-                    \item 多模态大模型训练技巧
-                \end{itemize}
-            \end{block}
-        \end{column}
-        \begin{column}{.5\textwidth}
-            \begin{block}{学习资源}
-                \begin{itemize}
-                    \item 《动手学深度学习》李沐
-                    \item CS 329P: Practical Machine Learning  斯坦福课程
-                \end{itemize}
-            \end{block}
-        \end{column}
-    \end{columns}
+\begin{frame}
+    % 2. 本文创新点：用带颜色的强调区块突出，与“局限”形成视觉对比
+    \begin{block}{\textcolor{blue}{本文核心创新点}}
+        \begin{enumerate} % 用有序列表，明确创新点优先级和数量
+            \item \textbf{统一多模态表征}：将图像（像素矩阵）、传感器数据（时序数值）、生产记录（文本）映射到共享语义空间，消除模态差异；
+            \item \textbf{动态语义 Tokenization}：自适应调整不同模态的输入编码方式（如图像分块 Token、传感器时序 Token）；
+            \item \textbf{跨模态对齐策略}：引入模态间注意力机制，强化图像-文本、传感器-生产记录的语义关联；
+            \item \textbf{两阶段训练范式}：先基于大规模工业数据集预训练，再针对具体决策任务（如故障诊断）微调；
+            \item \textbf{改进型 Transformer 模型}：同步生成图像特征与文本描述，将决策响应速度提升约30\%。
+        \end{enumerate}
+    \end{block}
 \end{frame}
 
-% \section{收获与不足}
-% \begin{frame}{阶段性成果}
-%     \begin{textbox}{已掌握技能}
-%         \begin{itemize}
-%             \item GAN网络结构与训练技巧
-%             \item 色彩空间转换原理（RGB/Lab）
-%             \item 图像质量评估指标（PSNR/SSIM）
-%         \end{itemize}
-%     \end{textbox}
-    
-%     \begin{textbox}{待解决问题}
-%         \begin{itemize}
-%             \item 多模态融合策略
-%             \item 小样本条件下的模型泛化
-%         \end{itemize} 
-%     \end{textbox}
+% 实验结果（3分钟）
+\section{实验验证}
+\begin{frame}{实验结果}
+    % 1. 实验设置：用基础区块明确前提，结构清晰
+    \begin{block}{实验设置}
+        \begin{itemize}
+            \item \textbf{数据集}：工业多模态专用数据集（含10万+图像-文本对、500万条传感器时序序列）；
+            \item \textbf{基线模型}：CNN+RNN混合模型、单模态LLM（如GPT-2工业微调版）、主流多模态模型（ViLBERT、FLAVA）；
+            \item \textbf{评价指标}：图像-文本双向检索准确率、视觉问答（VQA）F1分数、决策响应延迟（单位：ms）。
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    % 2. 关键结果：用红色强调区块突出核心数据，视觉冲击力强
+    \begin{block}{\textcolor{red}{关键实验结果}}
+        \begin{itemize}
+            \item \textbf{图像-文本检索准确率}：本文模型达89.5\%，较最优基线（ViLBERT 77.2\%）提升\textbf{12.3\%}；
+            \item \textbf{VQA F1分数}：本文模型达82.1\%，较基线（FLAVA 72.3\%）提高\textbf{9.8\%}；
+            \item \textbf{决策延迟}：因跨模态并行生成机制，较传统串行模型降低\textbf{30\%}（从280ms降至196ms）；
+            \item \textbf{消融实验}：动态语义Tokenization模块贡献最大，移除后性能下降7.1\%，验证其核心作用。
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% \begin{frame}
+%     % 3. 可视化说明：单独成段，明确辅助展示方式
+%     \textit{结果可视化}：将通过两类图表辅助说明——① 柱状图对比各模型在三指标上的性能差异；② 热力图展示跨模态注意力权重分布，直观验证关联捕捉效果。
+%     \begin{figure}
+%     \centering % 居中对齐
+%     \includegraphics[width = 0.6\textwidth]{image001.png}
+%     \caption{这是一张示例图片} % 图片标题
+%     \end{figure}    
 % \end{frame}
 
-\section{下一步计划}
-\begin{frame}{后续研究规划}
-    \begin{enumerate}
-        \item \textbf{知识拓展}
+% 总结展望（1分钟）
+\section{总结与展望}
+\begin{frame}{总结展望}
+    % 左右分栏布局：平衡“总结”与“展望”，结构对称
+    % \begin{minipage}[t]{0.48\textwidth}
+        % 1. 贡献总结：用蓝色区块突出已完成成果
+        \begin{block}{\textcolor{blue}{核心贡献总结}}
             \begin{itemize}
-                \item 学习相关课程如 CS 329P
-                \item 了解多模态融合前沿方法
+                \item 提出首个面向智能制造场景的多模态LLM框架，填补领域空白；
+                \item 有效解决跨模态数据融合与实时决策两大核心难题，性能优于现有方法；
+                \item 提供可迁移的多模态训练范式，为工业领域相关研究提供参考。
             \end{itemize}
-        \item \textbf{实践计划}
-            \begin{itemize}
-                \item 复现课程代码
-            \end{itemize}
-        \item \textbf{理论深化}
-            \begin{itemize}
-                \item 学习经典网络架构
-                \item 补充知识盲区
-            \end{itemize}
-    \end{enumerate}
+        \end{block}
+    % \end{minipage}
+    % \hfill % 分栏间距
+    % \begin{minipage}[t]{0.48\textwidth}
+    %     % 2. 未来方向：用绿色区块体现前瞻性，与“总结”形成视觉区分
+    %     \begin{block}{\textcolor{green}{未来研究方向}}
+    %         \begin{itemize}
+    %             \item 模态扩展：将当前三模态框架扩展至音频（设备异响）、3D点云（零件建模）等更多模态；
+    %             \item 部署优化：探索低资源场景下的模型轻量化方案，适配工业边缘设备；
+    %             \item 隐私保护：结合联邦学习技术，解决工业数据隐私与多厂协同训练的矛盾
+    %         \end{itemize}
+    %     \end{block}
+    % \end{minipage}
 \end{frame}
-
 
 \section{Q\&A}
 \begin{frame}{Q\&A}
     \begin{itemize}
-            \item 怎么找到合适的论文？
-            \item 怎么样读论文？
-            \item 怎么样做笔记？
-            \item 怎么样写论文？
+            \item 看论文困难，一大堆的专业词汇，每个字都认识，放到一起就不认识了
+            \item 按照上次讨论的框架总结不出来，目前主要靠AI；自己总结的说是在总结，其实就是复制粘贴论文内容，越总结越多，自己都不想看
+            \item 挺多文章都有很好看的配图，他们是怎么画出来的
         \end{itemize} 
 \end{frame}
 
