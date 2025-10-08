@@ -63,10 +63,88 @@
     经过第二次汇报，在结构优化的前提下，对文章内容的解读仍有缺陷。本次着重讨论如下问题：
     \begin{itemize}
         \item 文章聚焦的核心工程问题是什么？
-        \item  所构建的多模态大模型，其核心决策任务是什么？
-        \item 开展本项目的核心目标与应用价值是什么？
+        \item  所构建的多模态大模型，其核心决策任务是什么？输出什么？
     \end{itemize}
 \end{frame}
+
+\section{问题回答}
+\begin{frame}{Q1}
+
+\only<1>
+{本文要解决的核心工程问题是：基于多源数据（图像、信号、文本等），为工业场景中的设备维护、故障诊断、缺陷检测等任务，提供智能且高效的决策支持方案。实例如下图所示}
+
+\only<2>{
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figure1.png}
+    \caption{用于智能制造的多模式大型语言模型系统的对话示例}
+\end{figure}
+\vspace{0.3cm} % 图片间增加垂直间距，避免拥挤
+}
+
+
+\end{frame}
+
+\begin{frame}{Q2}
+
+\only<1>{
+模型需决策的是：对输入的图像、信号、文本等工业数据进行分析与理解，判断设备状态、故障类型或缺陷情况；输出为包含分析结果、诊断结论甚至优化建议的文本或可视化内容（如标注后的图片）。系统整体框架如下图所示
+}
+
+\only<2>{
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figure5.png}
+    \caption{基于多模态 Transformer 架构的统一双向图像文本生成框架}
+    \label{fig:5}
+\end{figure}
+}
+
+\end{frame}
+
+
+\section{图片总览}
+\begin{frame}{图片总览}
+    % 第一张图：从第1页开始显示
+
+    % 第二张图：从第2页开始显示
+    \only<1>{
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.5\textwidth]{figure2.png}
+        \caption{基于CNN的视觉编码器体系结构的全面说明}
+        % \label{fig:2}
+    \end{figure}
+    \vspace{0.3cm}
+    }
+
+    % 第三张图：从第3页开始显示
+    \only<2>{
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.5\textwidth]{figure3.png}
+        \caption{用生成动态视觉和信号字典以弥合表征差距的工作流程。}
+        % \label{fig:3}
+    \end{figure}
+    \vspace{0.3cm}
+    }
+
+    % 第四张图：从第4页开始显示
+    \only<3>{
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.5\textwidth]{figure4.png}
+        \caption{调整多种输入方式以输入到基于 Transformer 的语言模型}
+        % \label{fig:4}
+    \end{figure}
+    \vspace{0.3cm}
+    }
+
+    % 第五张图：从第5页开始显示
+
+\end{frame}
+
+
 
 \begin{frame}
     \Background
