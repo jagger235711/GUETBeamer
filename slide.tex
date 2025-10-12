@@ -13,7 +13,7 @@
 \institute{计算机与信息安全学院}
 \date{\today}
 \usepackage{GUETBeamer}
-% \logo{\includegraphics[width=0.2\linewidth]{Guet-tm.pdf}} % 每一页添加logo
+\logo{\includegraphics[width=0.2\linewidth]{Guet-tm.pdf}} % 每一页添加logo
 
 \def\cmd#1{\texttt{\color{red}\footnotesize $\backslash$#1}}
 \def\env#1{\texttt{\color{blue}\footnotesize #1}}
@@ -35,102 +35,165 @@
 
 \graphicspath{{./picture/}} % 图片所在位置
 
-% ------------------------------------
-%     正文
-% ------------------------------------
 \begin{document}
-
 \kaishu
+
+% ================ 封面 ================
 \begin{frame}
-    \titlepage
-    \begin{figure}[htpb]
-        \begin{center}
-            \includegraphics[width=0.5\linewidth]{guet-3.pdf}
-        \end{center}
-    \end{figure}
-\end{frame}
-
-\begin{frame}
-    \tableofcontents[sectionstyle=show,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]    
-\end{frame}
-
-% ------------------------------------------
-%     新的章节结构  
-% ------------------------------------------
-\section{图片总览}
-% \begin{frame}{多模式大型语言模型系统示例图}
-    \begin{frame}
-        \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.5\textwidth]{figure1.png}
-        \caption{用于智能制造的多模式大型语言模型系统的对话示例}
-        \label{fig:1}
-    \end{figure}
-    \end{frame}
-
-    \begin{frame}
-          \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.5\textwidth]{figure2.png}
-        \caption{基于CNN的视觉编码器体系结构的全面说明}
-        \label{fig:2}
-    \end{figure}
-    \end{frame}
-
-    \begin{frame}
-          \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.5\textwidth]{figure3.png}
-        \caption{用生成动态视觉和信号字典以弥合表征差距的工作流程。}
-        \label{fig:3}
-    \end{figure}
-    \end{frame}
-
-    \begin{frame}
-          \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.5\textwidth]{figure4.png}
-        \caption{调整多种输入方式以输入到基于 Transformer 的语言模型}
-        \label{fig:4}
-    \end{figure}
-    \end{frame}
-
-    \begin{frame}
-          \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.5\textwidth]{figure5.png}
-        \caption{基于多模态 Transformer 架构的统一双向图像文本生成框架}
-        \label{fig:5}
-    \end{figure}
-    \end{frame}
-
-
-
-\section{汇报简介与目标论文背景}
-\begin{frame}{Introduction}
+  \titlepage
+  \vspace{0.3cm}
+  \begin{itemize}
     \small
-    经过第二次汇报，在结构优化的前提下，对文章内容的解读仍有缺陷。本次着重讨论如下问题：
-    \begin{itemize}
-        \item 文章聚焦的核心工程问题是什么？
-        \item  所构建的多模态大模型，其核心决策任务是什么？输出什么？
-    \end{itemize}
+    \item \textbf{论文：} A Multimodal Large Language Model Framework for Intelligent Perception and Decision-Making in Smart Manufacturing
+    \item \textbf{作者：} Wang, Zhang, Jiang, Li
+    \item \textbf{期刊：} Sensors (2025), 25, 3072
+    \item \textbf{DOI：} 10.3390/s25103072
+  \end{itemize}
 \end{frame}
 
-\section{问题回答}
-\begin{frame}{Q1}
+% ================ 目录 ================
+% \begin{frame}{汇报结构 Overview}
+%   \tableofcontents
+% \end{frame}
 
-\only<1>
-{本文要解决的核心工程问题是：基于多源数据（图像、信号、文本等），为工业场景中的设备维护、故障诊断、缺陷检测等任务，提供智能且高效的决策支持方案。如图\ref{fig:1}所示}
-
-
-
+% ================ 一：动机 ================
+\section{研究动机与问题定义}
+\begin{frame}{研究背景与动机}
+  \begin{center}
+    % 论文 Figure 1：概念示意（人机对话/系统愿景）
+    \includegraphics[width=0.3\linewidth]{fig1_concept.png}
+  \end{center}
+  \vspace{0.3cm}
+  \begin{itemize}\small
+    \item 智能制造含多源异构数据（图像、传感器、生产记录），存在数据孤岛与跨模态融合难题。
+    \item 目标：用多模态大模型实现统一感知与实时决策，打通视觉—信号—文本链路。
+  \end{itemize}
+  \vspace{0.2cm}
+  \textbf{讲述提示：} 先用场景（人机协同的具体例子）吸引听众，再提出三个关键问题（异构、对齐、实时）。
 \end{frame}
 
-\begin{frame}{Q2}
-模型需决策的是：对输入的图像、信号、文本等工业数据进行分析与理解，判断设备状态、故障类型或缺陷情况；输出为包含分析结果、诊断结论甚至优化建议的文本或可视化内容（如标注后的图片）。系统整体框架如图\ref{fig:5}所示
+\begin{frame}{问题定义（精确化）}
+  \begin{itemize}
+    \item 输入模态：图像（高维静态）、传感器信号（时间序列）、文本/生产记录（语义/结构化）。
+    \item 研究要点：
+      \begin{enumerate}
+        \item 将不同模态映射到统一语义 token 空间；
+        \item 设计稳定的跨模态预训练目标（MLM/MVM/MTM）；
+        \item 构建能同时做 I2T 与 T2I 的双向生成体系，并满足工业级实时性。
+      \end{enumerate}
+  \end{itemize}
 \end{frame}
 
+% ================ 二：相关工作 ================
+\section{相关工作}
+\begin{frame}{相关工作概览}
+  \begin{itemize}
+    \item 通用多模态 LLM：LLaVA、BLIP-2、X2-VLM 等 —— 强在通用域，但工业数据稀缺；
+    \item 工业方向：已有若干振动信号与异常检测尝试，但缺统一框架；
+    \item 差距：少有端到端的工业多模态大模型，尤其缺语义字典 + 双向生成结合。
+  \end{itemize}
+\end{frame}
 
+% ================ 三：方法 ================
+\section{方法}
+\begin{frame}{总体设计思想（一句话）}
+  \begin{itemize}
+    \item \textbf{把图像/信号/文本都量化为语义 token}，在 Transformer 主干上做联合建模与双向生成。
+    \item 关键组件：视觉编码器（CNN）、信号编码器、动态语义词典、Transformer backbone、双向生成器（I2T/T2I）。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{视觉编码器（论文 Figure 2）}
+  \centering
+  % 论文 Figure 2：CSPDarknet-based visual encoder 结构图
+  \includegraphics[width=0.3\linewidth]{fig2_visual_encoder.png}
+  \vspace{0.3cm}
+  \begin{itemize}
+    \item 说明：使用 CSPDarknet backbone 提取 grid-based 特征，随后 3x3 conv + 4x4 max-pool。
+    \item 讲解要点：视觉特征被设计为“dense grid vectors”，为后续语义量化做准备。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{动态语义词典（论文 Figure 3）}
+  \centering
+  \includegraphics[width=0.4\linewidth]{fig3_dictionary.png}
+  \vspace{0.3cm}
+  \begin{itemize}
+    \item 作用：将视觉/信号特征映射到离散语义 embedding（词典索引），形成与文本 token 类似的表示。
+    \item 关键技术：最近邻匹配 + momentum 更新（公式见论文），并用 stop-gradient 处理非可微问题。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{模态对齐与输入（论文 Figure 4）}
+  \centering
+  \includegraphics[width=0.4\linewidth]{fig4_alignment.png}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \item 说明：视觉 token、信号 token、文本 token 在位置编码后并入 Transformer；并行化处理与位置信息保留。
+    \item 训练目标：MLM / MVM / MTM 三类任务联合优化。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{统一双向生成模块（论文 Figure 5）}
+  \centering
+  \includegraphics[width=0.4\linewidth]{fig5_unified_generation.png}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \item 支持 I2T（image→text）与 T2I（text→image），共享 Transformer 主干，仅在输出层微分任务头。
+    \item 训练技巧：token-level teacher-forcing + sequence-level SCST/CLIP rewards，T2I 用 mask-predict 非自回归解码以提速。
+  \end{itemize}
+\end{frame}
+
+% ================ 四：实验 ================
+\section{实验与结果}
+\begin{frame}{实验设置（简要）}
+  \begin{itemize}
+    \item 预训练数据：MS COCO, Visual Genome；微调/评测：Flickr30K, VQA2.0 等。
+    \item 硬件：8$\times$V100；实现：PyTorch。
+    \item 指标：图文检索（R@k）、VQA（acc）、生成（FID, Div-n, CIDEr-D）。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{主要结果（图文检索 / VQA / 生成）}
+  \centering
+  % 论文的实验结果图或表（可用 fig6_results.pdf）
+  \includegraphics[width=0.85\linewidth]{fig6_results.png}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \item 图文检索：在 COCO / Flickr30k 上达到或优于多数基线（R@1/R@5 提升）。
+    \item VQA：比 LXMERT 高 ~5.8\%（test-dev）。
+    \item 生成：FID 显著下降，多样性（Div-1/2）提高，但 CIDEr-D 有小幅trade-off。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{消融与稳定性分析}
+  \begin{itemize}
+    \item 没有 MVM（仅将线性图像 embedding 串联）会导致训练不稳定（loss 不收敛）——论文中的 Model2 实验。
+    \item 加入 MVM 与 MTM 可显著改善跨模态对齐与最终任务表现（见表格/曲线）。
+    \item 讲解提示：把消融结果与最初提出的问题（模态不对齐）对应起来讲。
+  \end{itemize}
+\end{frame}
+
+% ================ 五：总结 ================
+\section{总结与展望}
+\begin{frame}{结论要点}
+  \begin{itemize}
+    \item 提出端到端工业场景多模态 LLM 框架：语义词典 + Transformer 主干 + 双向生成。
+    \item 在检索、VQA、生成等任务上展现出强泛化能力与实用价值。
+    \item 技术要点：语义词典稳定模态对齐；MVM/MTM 预训练任务确保视觉信息被充分学习。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{未来工作（建议）}
+  \begin{itemize}
+    \item 构建/发布大规模工业多模态数据集以提升泛化；\\
+    \item 优化实时推理与流式输入支持；\\
+    \item 增强模型可解释性（对决策链路的可视化与审计）；\\
+    \item 研究增量在线学习与小样本微调在工业部署中的实用化路径。
+  \end{itemize}
+\end{frame}
+
+%==================== 致谢 ====================%
 \begin{frame}
     \Background
     \begin{center}
