@@ -7,13 +7,13 @@
 % ------------------------------------------
 %     标题页
 % ------------------------------------------
-\author{汇报人：巫文杰 \texorpdfstring{\quad}{} 指导教师：曹建宇}
-\title{双周工作汇报}
+\author{汇报人：巫文杰  }
+\title{梯度下降与拟牛顿法性能比较}
 % \subtitle{毕业设计答辩}
 \institute{计算机与信息安全学院}
 \date{\today}
 \usepackage{GUETBeamer}
-% \logo{\includegraphics[width=0.2\linewidth]{Guet-tm.pdf}} % 每一页添加logo
+\logo{\includegraphics[width=0.2\linewidth]{Guet-tm.pdf}} % 每一页添加logo
 
 \def\cmd#1{\texttt{\color{red}\footnotesize $\backslash$#1}}
 \def\env#1{\texttt{\color{blue}\footnotesize #1}}
@@ -50,162 +50,128 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}
-    \tableofcontents[sectionstyle=show,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]    
-\end{frame}
-
-% ------------------------------------------
-%     新的章节结构  
-% ------------------------------------------
-\section{汇报简介与目标论文背景}
-\begin{frame}{Introduction}
-    \small
-    在第一次汇报中，第三篇论文的内容没有完全展开，此次将针对第三篇论文进行更详细的介绍，并结合上次导师的反馈，对汇报的内容和格式进行进一步的优化。
-\end{frame}
-\begin{frame}{研究背景}
-    % \begin{itemize}[<+->] % 逐项显示动画效果
-    \begin{itemize}    
-      \item \textbf{领域大图景}：
-        \begin{itemize}
-            \item 智能制造通过多源数据（图像、传感器、生产记录）实现实时决策
-            \item 传统单模态方法存在数据隔离和整合困难的问题
-        \end{itemize}
-        
-        \vspace{0.5cm} % 增加垂直间距
-        
-        \item \textbf{重要性}：
-        \begin{itemize}
-            \item 工业4.0要求系统具备多模态感知能力
-            \item 据报告，预计到2032年全球智能制造市场将超\textbf{9989.9亿美元}
-            \item  \url{https://www.fortunebusinessinsights.com/zh/smart-manufacturing-market-103594}
-            
-        \end{itemize}
-        
-        \vspace{0.5cm}
-        
-        \item \textbf{趋势与挑战}：
-        \begin{itemize}
-            \item 多模态数据量剧增，但现有方法难以实现跨模态语义对齐
-            \item 导致决策延迟和误差
-        \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\section{问题定义}
-\begin{frame}{核心问题与难点}  
-    \begin{block}{核心问题}
-        如何有效融合智能制造中的多源异构数据（图像、传感器、文本）以提升实时决策精度？
-    \end{block}
-    \vspace{0.3cm}
-    \textbf{主要难点：}
-    \begin{itemize}
-        \item 模态间数据格式差异显著：
-            \begin{itemize}
-                \item 图像数据为像素矩阵
-                \item 传感器数据是时序数值
-                \item 文本数据是非结构化语义
-            \end{itemize}
-        \item 跨模态语义对齐困难：
-            \begin{itemize}
-                \item 传统方法难以建立不同模态间的语义关联
-                \item 导致信息孤立，无法形成决策闭环
-            \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\section{研究方法}
-\begin{frame}{方法创新}
-    % 1. 现有方法局限性：用灰色背景区块区分，突出“问题”属性
-    \begin{block}{现有方法局限性}
-        \begin{itemize}
-            \item 单模态分析局限：仅针对单一数据类型（如纯图像或纯文本处理），无法捕捉跨模态关联信息；
-            \item 表征方法缺陷：缺乏动态 tokenization 机制，且未形成统一的多模态表征框架。
-        \end{itemize}
-    \end{block}
-\end{frame}
-
-\begin{frame}
-    % 2. 本文创新点：用带颜色的强调区块突出，与“局限”形成视觉对比
-    \begin{block}{\textcolor{blue}{本文核心创新点}}
-        \begin{enumerate} % 用有序列表，明确创新点优先级和数量
-            \item \textbf{统一多模态表征}：将图像（像素矩阵）、传感器数据（时序数值）、生产记录（文本）映射到共享语义空间，消除模态差异；
-            \item \textbf{动态语义 Tokenization}：自适应调整不同模态的输入编码方式（如图像分块 Token、传感器时序 Token）；
-            \item \textbf{跨模态对齐策略}：引入模态间注意力机制，强化图像-文本、传感器-生产记录的语义关联；
-            \item \textbf{两阶段训练范式}：先基于大规模工业数据集预训练，再针对具体决策任务（如故障诊断）微调；
-            \item \textbf{改进型 Transformer 模型}：同步生成图像特征与文本描述，将决策响应速度提升约30\%。
-        \end{enumerate}
-    \end{block}
-\end{frame}
-
-% 实验结果（3分钟）
-\section{实验验证}
-\begin{frame}{实验结果}
-    % 1. 实验设置：用基础区块明确前提，结构清晰
-    \begin{block}{实验设置}
-        \begin{itemize}
-            \item \textbf{数据集}：工业多模态专用数据集（含10万+图像-文本对、500万条传感器时序序列）；
-            \item \textbf{基线模型}：CNN+RNN混合模型、单模态LLM（如GPT-2工业微调版）、主流多模态模型（ViLBERT、FLAVA）；
-            \item \textbf{评价指标}：图像-文本双向检索准确率、视觉问答（VQA）F1分数、决策响应延迟（单位：ms）。
-        \end{itemize}
-    \end{block}
-\end{frame}
-
-\begin{frame}
-    % 2. 关键结果：用红色强调区块突出核心数据，视觉冲击力强
-    \begin{block}{\textcolor{red}{关键实验结果}}
-        \begin{itemize}
-            \item \textbf{图像-文本检索准确率}：本文模型达89.5\%，较最优基线（ViLBERT 77.2\%）提升\textbf{12.3\%}；
-            \item \textbf{VQA F1分数}：本文模型达82.1\%，较基线（FLAVA 72.3\%）提高\textbf{9.8\%}；
-            \item \textbf{决策延迟}：因跨模态并行生成机制，较传统串行模型降低\textbf{30\%}（从280ms降至196ms）；
-            \item \textbf{消融实验}：动态语义Tokenization模块贡献最大，移除后性能下降7.1\%，验证其核心作用。
-        \end{itemize}
-    \end{block}
-\end{frame}
-
 % \begin{frame}
-%     % 3. 可视化说明：单独成段，明确辅助展示方式
-%     \textit{结果可视化}：将通过两类图表辅助说明——① 柱状图对比各模型在三指标上的性能差异；② 热力图展示跨模态注意力权重分布，直观验证关联捕捉效果。
-%     \begin{figure}
-%     \centering % 居中对齐
-%     \includegraphics[width = 0.6\textwidth]{image001.png}
-%     \caption{这是一张示例图片} % 图片标题
-%     \end{figure}    
+%     \tableofcontents[sectionstyle=show,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]    
 % \end{frame}
 
-% 总结展望（1分钟）
-\section{总结与展望}
-\begin{frame}{总结展望}
-    % 左右分栏布局：平衡“总结”与“展望”，结构对称
-    % \begin{minipage}[t]{0.48\textwidth}
-        % 1. 贡献总结：用蓝色区块突出已完成成果
-        \begin{block}{\textcolor{blue}{核心贡献总结}}
-            \begin{itemize}
-                \item 提出首个面向智能制造场景的多模态LLM框架，填补领域空白；
-                \item 有效解决跨模态数据融合与实时决策两大核心难题，性能优于现有方法；
-                \item 提供可迁移的多模态训练范式，为工业领域相关研究提供参考。
-            \end{itemize}
-        \end{block}
-    % \end{minipage}
-    % \hfill % 分栏间距
-    % \begin{minipage}[t]{0.48\textwidth}
-    %     % 2. 未来方向：用绿色区块体现前瞻性，与“总结”形成视觉区分
-    %     \begin{block}{\textcolor{green}{未来研究方向}}
-    %         \begin{itemize}
-    %             \item 模态扩展：将当前三模态框架扩展至音频（设备异响）、3D点云（零件建模）等更多模态；
-    %             \item 部署优化：探索低资源场景下的模型轻量化方案，适配工业边缘设备；
-    %             \item 隐私保护：结合联邦学习技术，解决工业数据隐私与多厂协同训练的矛盾
-    %         \end{itemize}
-    %     \end{block}
-    % \end{minipage}
+%--------------------------------------------------
+\section{研究背景与目标}
+\begin{frame}{研究背景与目标}
+  \begin{itemize}
+    \item 梯度下降（Gradient Descent, GD）是最基础的优化算法；
+    \item 拟牛顿法（BFGS）是一种利用 Hessian 近似的二阶方法；
+    \item 实验目标：
+    \begin{itemize}
+      \item 动手实现梯度下降算法；
+      \item 实现拟牛顿法；
+      \item 在同一线性模型上比较两者的性能差异。
+    \end{itemize}
+  \end{itemize}
+
+  \vspace{0.5cm}
+  \textbf{核心问题：}谁在速度与精度上更具优势？
 \end{frame}
 
-\section{Q\&A}
-\begin{frame}{Q\&A}
+%--------------------------------------------------
+\section{实验设计与流程}
+\begin{frame}{实验设计与流程}
+  \begin{enumerate}
+    \item \textbf{数据生成：} 设线性模型
+    \[
+      y = w^\top x + b + \epsilon, \quad \epsilon \sim \mathcal{N}(0, \sigma^2)
+    \]
+    \item \textbf{梯度下降实现：}
     \begin{itemize}
-            \item 看论文困难，一大堆的专业词汇，每个字都认识，放到一起就不认识了
-            \item 按照上次讨论的框架总结不出来，目前主要靠AI；自己总结的说是在总结，其实就是复制粘贴论文内容，越总结越多，自己都不想看
-            \item 挺多文章都有很好看的配图，他们是怎么画出来的
-        \end{itemize} 
+      \item 手动计算梯度；
+      \item 使用固定学习率更新参数。
+    \end{itemize}
+    \item \textbf{拟牛顿法实现（BFGS）：}
+    \begin{itemize}
+      \item 使用 \texttt{scipy.optimize.minimize}；
+      \item 自动估计 Hessian 近似矩阵。
+    \end{itemize}
+    \item \textbf{框架验证：} 使用 sklearn 的线性回归进行对照。
+  \end{enumerate}
+\end{frame}
+
+%--------------------------------------------------
+\section{实验结果对比}
+\begin{frame}{实验结果对比}
+  \begin{table}[]
+    \centering
+    \begin{tabular}{lcccccc}
+      \toprule
+      方法 & 收敛状态 & 迭代数 & 耗时(s) & 最终Loss & 参数误差 \\
+      \midrule
+      GD   & 收敛 & 500 & 0.10 & 0.00460 & 3.9953 \\
+      BFGS & 未完全收敛 & 500 & 0.10 & 0.00460 & 3.9889 \\
+      \bottomrule
+    \end{tabular}
+    \caption{梯度下降与拟牛顿法性能对比}
+  \end{table}
+
+  \vspace{0.3cm}
+  \textbf{观察：}
+  \begin{itemize}
+    \item 两者最终Loss几乎一致；
+    \item BFGS初期收敛更快；
+    \item GD收敛稳定，但路径较长。
+  \end{itemize}
+\end{frame}
+
+%--------------------------------------------------
+\begin{frame}{收敛曲线与拟合结果}
+  \begin{columns}
+    \column{0.48\textwidth}
+      \includegraphics[width=\linewidth]{20250921100756.png}
+      \captionof*{figure}{Loss下降曲线（对数刻度）}
+    \column{0.48\textwidth}
+      \includegraphics[width=\linewidth]{20250921101354.png}
+      \captionof*{figure}{模型拟合效果}
+  \end{columns}
+
+  \vspace{0.3cm}
+  \centering
+  \includegraphics[width=0.6\linewidth]{20250921100846.png}
+  \captionof*{figure}{参数收敛轨迹}
+\end{frame}
+
+%--------------------------------------------------
+\section{问题与原因分析}
+\begin{frame}{问题与原因分析}
+  \textbf{主要问题：}
+  \begin{enumerate}
+    \item \textbf{Loss下降太快}：
+    \begin{itemize}
+      \item 问题过于简单；
+      \item 噪声过小或超参数设置过优；
+    \end{itemize}
+
+    \item \textbf{BFGS曲线为直线}：
+    \begin{itemize}
+      \item 原因：仅绘制最终结果，未记录迭代；
+      \item 修正后可看到完整收敛轨迹。
+    \end{itemize}
+  \end{enumerate}
+
+  \vspace{0.3cm}
+  \textbf{改进方向：}
+  \begin{itemize}
+    \item 增加噪声强度；
+    \item 调整学习率与初始化；
+    \item 设计更复杂的非线性模型。
+  \end{itemize}
+\end{frame}
+
+%--------------------------------------------------
+\section{总结与启发}
+\begin{frame}{总结与启发}
+  \begin{itemize}
+    \item 实验验证了梯度下降与拟牛顿法在简单线性模型中的性能；
+    \item BFGS在早期阶段收敛更快，但计算代价略高；
+    \item 手动实现帮助深入理解优化算法的更新机制；
+    \item 后续可扩展到非线性或深度模型中，进一步比较不同优化策略的表现。
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
