@@ -42,12 +42,12 @@
 
 \kaishu
 \begin{frame}
-    \titlepage
-    \begin{figure}[htpb]
-        \begin{center}
-            \includegraphics[width=0.5\linewidth]{guet-3.pdf}
-        \end{center}
-    \end{figure}
+  \titlepage
+  \begin{figure}[htpb]
+    \begin{center}
+      \includegraphics[width=0.5\linewidth]{guet-3.pdf}
+    \end{center}
+  \end{figure}
 \end{frame}
 
 % \begin{frame}
@@ -61,11 +61,11 @@
     \item 梯度下降（Gradient Descent, GD）是最基础的优化算法；
     \item 拟牛顿法（BFGS）是一种利用 Hessian 近似的二阶方法；
     \item 实验目标：
-    \begin{itemize}
-      \item 动手实现梯度下降算法；
-      \item 实现拟牛顿法；
-      \item 在同一线性模型上比较两者的性能差异。
-    \end{itemize}
+          \begin{itemize}
+            \item 动手实现梯度下降算法；
+            \item 实现拟牛顿法；
+            \item 在同一线性模型上比较两者的性能差异。
+          \end{itemize}
   \end{itemize}
 
   \vspace{0.5cm}
@@ -77,19 +77,19 @@
 \begin{frame}{实验设计与流程}
   \begin{enumerate}
     \item \textbf{数据生成：} 设线性模型
-    \[
-      y = w^\top x + b + \epsilon, \quad \epsilon \sim \mathcal{N}(0, \sigma^2)
-    \]
+          \[
+            y = w^\top x + b + \epsilon, \quad \epsilon \sim \mathcal{N}(0, \sigma^2)
+          \]
     \item \textbf{梯度下降实现：}
-    \begin{itemize}
-      \item 手动计算梯度；
-      \item 使用固定学习率更新参数。
-    \end{itemize}
+          \begin{itemize}
+            \item 手动计算梯度；
+            \item 使用固定学习率更新参数。
+          \end{itemize}
     \item \textbf{拟牛顿法实现（BFGS）：}
-    \begin{itemize}
-      \item 使用 \texttt{scipy.optimize.minimize}；
-      \item 自动估计 Hessian 近似矩阵。
-    \end{itemize}
+          \begin{itemize}
+            \item 使用 \texttt{scipy.optimize.minimize}；
+            \item 自动估计 Hessian 近似矩阵。
+          \end{itemize}
   \end{enumerate}
 \end{frame}
 
@@ -98,48 +98,48 @@
 
 %--------------------------------------------------
 \begin{frame}{拟合结果}
- \centering
+  \centering
   \includegraphics[width=1\linewidth]{fits.png}
 \end{frame}
 
 \begin{frame}{收敛曲线}
- \centering
+  \centering
   \includegraphics[width=0.8\linewidth]{loss_liner.png}
 \end{frame}
 
 \begin{frame}{实验结果对比}
-    \begin{table}[]
+  \begin{table}[]
     \centering
     \small
     % 关键：压缩间距，数值可按需调整（如2pt、1pt）
     \setlength{\tabcolsep}{2pt}  % 减小列间距（默认约6pt）
     \setlength{\abovecaptionskip}{0pt}  % 减小标题与表格间距
     \begin{tabular}{lccccc}
-        \toprule[1pt] % 顶部粗线
-        优化方法   & 最终损失 & 均方误差（MSE） & 参数误差（||w - w*||） & 总耗时（s） & 迭代次数（Iters） \\
-        \midrule      % 中间细线
-        Manual GD  & 0.100687              & 0.201374        & 33.103624              & 0.251708    & 401 \\
-        PyTorch GD & 0.100687              & 0.201374        & 33.103626              & 1.140493    & 401 \\
-        BFGS       & 0.100768              & 0.201536        & 30.464252              & 0.560736    & 500 \\
-        \bottomrule[1pt] % 底部粗线
+      \toprule[1pt] % 顶部粗线
+      优化方法       & 最终损失     & 均方误差（MSE） & 参数误差（||w - w*||） & 总耗时（s）   & 迭代次数（Iters） \\
+      \midrule      % 中间细线
+      Manual GD  & 0.100687 & 0.201374  & 33.103624        & 0.251708 & 401         \\
+      PyTorch GD & 0.100687 & 0.201374  & 33.103626        & 1.140493 & 401         \\
+      BFGS       & 0.100768 & 0.201536  & 30.464252        & 0.560736 & 500         \\
+      \bottomrule[1pt] % 底部粗线
     \end{tabular}
     \caption{各优化方法核心性能指标对比} % 表格标题
   \end{table}
 \end{frame}
 
 \begin{frame}{实验结果对比}
-    \begin{table}[]
+  \begin{table}[]
     \centering
     \small
     % 表格环境（指定宽度为页面宽度的0.8倍，匹配列数需求）
     \begin{tabular}{lccccc}
-        \toprule[1pt] % 顶部粗线
-        精度要求（eps） & 梯度下降耗时(s) & PyTorch GD耗时(s) & BFGS耗时(s) \\
-        \midrule      % 中间细线
-        0.010000       & 0.000886        & 0.005917          & 0.009019 \\
-        0.000100       & 0.087914        & 0.405645          & 0.510194 \\
-        0.000001       & 0.248542        & 1.126367          & 无穷大（inf） \\
-        \bottomrule[1pt] % 底部粗线
+      \toprule[1pt] % 顶部粗线
+      精度要求（eps） & 梯度下降耗时(s) & PyTorch GD耗时(s) & BFGS耗时(s) \\
+      \midrule      % 中间细线
+      0.010000  & 0.000886  & 0.005917        & 0.009019  \\
+      0.000100  & 0.087914  & 0.405645        & 0.510194  \\
+      0.000001  & 0.248542  & 1.126367        & 无穷大（inf）  \\
+      \bottomrule[1pt] % 底部粗线
     \end{tabular}
     \caption{不同精度要求下各算法耗时对比} % 表格标题
   \end{table}
@@ -147,7 +147,7 @@
 
 
 \begin{frame}
-   \textbf{预期：}
+  \textbf{预期：}
   \begin{itemize}
     \item 两者最终Loss几乎一致；
     \item BFGS收敛稳定，收敛到同一loss的时间更短；
@@ -168,16 +168,16 @@
   \textbf{主要问题：}
   \begin{enumerate}
     \item \textbf{Loss下降太快}：
-    \begin{itemize}
-      \item 问题过于简单；
-      \item 噪声过小或超参数设置过优；
-    \end{itemize}
+          \begin{itemize}
+            \item 问题过于简单；
+            \item 噪声过小或超参数设置过优；
+          \end{itemize}
 
     \item \textbf{BFGS性能比GD差，与预期不符}：
-    \begin{itemize}
-      \item 原因：线性模型过于简单，用不上Hessian；
-      \item 使用非线性模型。
-    \end{itemize}
+          \begin{itemize}
+            \item 原因：线性模型过于简单，用不上Hessian；
+            \item 使用非线性模型。
+          \end{itemize}
 
   \end{enumerate}
 
@@ -188,7 +188,7 @@
     \item 调整学习率与初始化；
     \item 设计更复杂的非线性模型。
   \end{itemize}
-  
+
 \end{frame}
 
 %--------------------------------------------------
@@ -204,57 +204,57 @@
 \section{改进实验}
 \begin{frame}{改进实验}
   \textbf{主要改进点：}
-    \begin{itemize}
-      \item 使用非线性函数，增加拟合难度；
-      \item 统一使用pytorch框架实现GD与BFGS,减小误差；
-    \end{itemize}
+  \begin{itemize}
+    \item 使用非线性函数，增加拟合难度；
+    \item 统一使用pytorch框架实现GD与BFGS,减小误差；
+  \end{itemize}
 \end{frame}
 %--------------------------------------------------
 \section{实验结果对比}
 
 %--------------------------------------------------
 \begin{frame}{拟合结果}
- \centering
+  \centering
   \includegraphics[width=0.75\linewidth]{fits_none_liner.png}
 \end{frame}
 
 \begin{frame}{收敛曲线}
- \centering
+  \centering
   \includegraphics[width=0.75\linewidth]{loss_none_liner.png}
 \end{frame}
 
 \begin{frame}{实验结果对比}
-    \begin{table}[]
+  \begin{table}[]
     \centering
     \small
     \setlength{\tabcolsep}{2pt}  % 减小列间距
     \setlength{\abovecaptionskip}{0pt}  % 减小标题与表格间距
     \begin{tabular}{lccccc}
-        \toprule[1pt] % 顶部粗线
-        优化方法   & 最终损失 & 均方误差（MSE） & 参数误差（||w - w*||） & 总耗时（s） & 迭代次数（Iters） \\
-        \midrule      % 中间细线
-        GD (SGD)  & 0.009886 & 0.009885 & 无穷大（inf） & 1.009613 & 1000 \\
-        BFGS      & 0.009457 & 0.009457 & 无穷大（inf） & 0.241801 & 100 \\
-        \bottomrule[1pt] % 底部粗线
+      \toprule[1pt] % 顶部粗线
+      优化方法     & 最终损失     & 均方误差（MSE） & 参数误差（||w - w*||） & 总耗时（s）   & 迭代次数（Iters） \\
+      \midrule      % 中间细线
+      GD (SGD) & 0.009886 & 0.009885  & 无穷大（inf）         & 1.009613 & 1000        \\
+      BFGS     & 0.009457 & 0.009457  & 无穷大（inf）         & 0.241801 & 100         \\
+      \bottomrule[1pt] % 底部粗线
     \end{tabular}
     \caption{各优化方法核心性能指标对比}
   \end{table}
 \end{frame}
 
 \begin{frame}{实验结果对比}
-    \begin{table}[]
+  \begin{table}[]
     \centering
     \small
     \setlength{\tabcolsep}{2pt}  % 减小列间距
     \setlength{\abovecaptionskip}{0pt}  % 减小标题与表格间距
     \begin{tabular}{lcc}
-        \toprule[1pt] % 顶部粗线
-        精度要求（eps） & 梯度下降耗时(s) & BFGS耗时(s) \\
-        \midrule      % 中间细线
-        0.010000 & 0.878364 & 0.070122 \\
-        0.000100 & 无穷大（inf） & 无穷大（inf） \\
-        0.000001 & 无穷大（inf） & 无穷大（inf） \\
-        \bottomrule[1pt] % 底部粗线
+      \toprule[1pt] % 顶部粗线
+      精度要求（eps） & 梯度下降耗时(s) & BFGS耗时(s) \\
+      \midrule      % 中间细线
+      0.010000  & 0.878364  & 0.070122  \\
+      0.000100  & 无穷大（inf）  & 无穷大（inf）  \\
+      0.000001  & 无穷大（inf）  & 无穷大（inf）  \\
+      \bottomrule[1pt] % 底部粗线
     \end{tabular}
     \caption{不同精度要求下各算法耗时对比}
   \end{table}
@@ -263,10 +263,10 @@
 
 
 \begin{frame}
-    \Background
-    \begin{center}
-        {\Huge WELLCOME FEEDBACK!}
-    \end{center}
+  \Background
+  \begin{center}
+    {\Huge WELLCOME FEEDBACK!}
+  \end{center}
 \end{frame}
 
 \end{document}
