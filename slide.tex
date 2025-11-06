@@ -4,6 +4,13 @@
 \usepackage[T1]{fontenc}
 \usepackage{latexsym,amsmath,xcolor,multicol,booktabs,calligra}
 \usepackage{graphicx,pstricks,listings,stackengine,gbt7714,tikz}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{caption} % 或者 \usepackage{capt-of}
+
+
 % ------------------------------------------
 %     标题页
 % ------------------------------------------
@@ -50,9 +57,9 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}
-    \tableofcontents[sectionstyle=show,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]    
-\end{frame}
+% \begin{frame}
+%     \tableofcontents[sectionstyle=show,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]    
+% \end{frame}
 
 
 % =====================================================
@@ -84,14 +91,14 @@
 % --- 总体架构 ---
 \begin{frame}{L4S-LLM 框架概览}
   \centering
-  \includegraphics[width=0.8\textwidth]{example-image-c}
+  % \includegraphics[width=0.8\textwidth]{example-image-c}
   \captionof{figure}{L4S-LLM 框架总览（论文 Fig.2）}
   \vspace{0.3cm}
   \textbf{设计目标：}  
   将 LLM 蒸馏为一个低延迟的网络决策模块，使其能在 L4S 路由器中实时预测：
-  \[
-  \text{Action} = \{\text{Enqueue},\; \text{Drop},\; \text{Mark (ECN)}\}
-  \]
+  % \[
+  % \text{Action} = \{\text{Enqueue},\; \text{Drop},\; \text{Mark (ECN)}\}
+  % \]
 \end{frame}
 
 % --- 状态编码器 ---
@@ -115,7 +122,7 @@
   \end{itemize}
   \vspace{0.3cm}
   \centering
-  \includegraphics[width=0.6\textwidth]{example-image-a}
+  % \includegraphics[width=0.6\textwidth]{example-image-a}
   \captionof{figure}{状态编码示意}
 \end{frame}
 
@@ -161,7 +168,7 @@
   \end{itemize}
   \column{0.45\textwidth}
   \centering
-  \includegraphics[width=0.95\textwidth]{example-image-b}
+  % \includegraphics[width=0.95\textwidth]{example-image-b}
   \captionof{figure}{LoRA 蒸馏示意}
   \end{columns}
 \end{frame}
@@ -181,7 +188,7 @@
   \end{itemize}
   \vspace{0.4cm}
   \centering
-  \includegraphics[width=0.7\textwidth]{example-image}
+  % \includegraphics[width=0.7\textwidth]{example-image}
   \captionof{figure}{L4S-LLM 在线部署流程}
 \end{frame}
 
@@ -202,7 +209,7 @@
   \end{itemize}
   \vspace{0.5cm}
   \centering
-  \includegraphics[width=0.75\textwidth]{example-image-duck}
+  % \includegraphics[width=0.75\textwidth]{example-image-duck}
   \captionof{figure}{性能比较（论文 Fig.11–15）}
 \end{frame}
 
