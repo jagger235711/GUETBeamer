@@ -15,8 +15,8 @@
 %     标题页
 % ------------------------------------------
 \author{汇报人：巫文杰 \texorpdfstring{\quad}{} 指导教师：曹建宇}
-\title{双周工作汇报}
-% \subtitle{毕业设计答辩}
+\title{Distilling Large Language Models for Network  Active Queue Management}
+\subtitle{论文汇报}
 \institute{计算机与信息安全学院}
 \date{\today}
 \usepackage{GUETBeamer}
@@ -47,14 +47,15 @@
 % ------------------------------------
 \begin{document}
 
-\kaishu
+%==================== 封面 ====================%
 \begin{frame}
-    \titlepage
-    \begin{figure}[htpb]
-        \begin{center}
-            \includegraphics[width=0.5\linewidth]{guet-3.pdf}
-        \end{center}
-    \end{figure}
+  \titlepage
+  \vspace{0.5cm}
+  \begin{itemize}
+    \item 作者：Shiva Raj Pokhrel, et al.
+    \item 发表：arXiv 2025 (预印本)
+          % \item 来源：Google Brain, Google Research, University of Toronto
+  \end{itemize}
 \end{frame}
 
 % \begin{frame}
@@ -69,10 +70,10 @@
   \begin{itemize}
     \item \textbf{Active Queue Management (AQM)}：网络路由器通过主动丢包或ECN标记避免拥塞。
     \item 传统方法（如 CoDel、PIE、L4S）依赖固定规则，难以应对：
-      \begin{itemize}
-        \item 异构流量类型（TCP、UDP、DCTCP等）
-        \item 高速 / 低延迟场景（5G、卫星网）
-      \end{itemize}
+          \begin{itemize}
+            \item 异构流量类型（TCP、UDP、DCTCP等）
+            \item 高速 / 低延迟场景（5G、卫星网）
+          \end{itemize}
     \item 作者提出：\textbf{能否让 LLM 参与队列控制决策？}
   \end{itemize}
   \vspace{0.5cm}
@@ -84,6 +85,15 @@
   \end{enumerate}
 \end{frame}
 
+\begin{frame}{}
+  \centering
+  \includegraphics[width=0.8\textwidth,height=0.6\textheight,keepaspectratio]{fig1.png}
+  \captionof{figure}{功能示意}
+  \vspace{0.3cm}
+  \textbf{设计目标：}
+  用LLM替代之前基于规则的传统方式,实现更智能的队列管理
+\end{frame}
+
 % =====================================================
 \section{研究设计（核心部分）}
 % =====================================================
@@ -91,106 +101,83 @@
 % --- 总体架构 ---
 \begin{frame}{L4S-LLM 框架概览}
   \centering
-  % \includegraphics[width=0.8\textwidth]{example-image-c}
+  \includegraphics[width=0.8\textwidth,height=0.6\textheight,keepaspectratio]{fig2.png}
   \captionof{figure}{L4S-LLM 框架总览（论文 Fig.2）}
   \vspace{0.3cm}
-  \textbf{设计目标：}  
-  将 LLM 蒸馏为一个低延迟的网络决策模块，使其能在 L4S 路由器中实时预测：
-  % \[
-  % \text{Action} = \{\text{Enqueue},\; \text{Drop},\; \text{Mark (ECN)}\}
-  % \]
+  \textbf{工程目标：}
+  将 LLM 蒸馏为一个低延迟的网络决策模块，使其能在 L4S 路由器中实时预测
 \end{frame}
 
 % --- 状态编码器 ---
 \begin{frame}{模块一：多模态状态编码器（State Encoder）}
   \begin{itemize}
+    \small
     \item 网络状态包括：
-      \[
-      s_t = [\text{queue\_delay}, \text{RTT}, \text{loss\_rate}, \text{flow\_count}, \text{ecn\_ratio}, \text{throughput}, \ldots]
-      \]
+          \[
+            s_t = [\text{queue\_delay}, \text{RTT}, \text{loss\_rate}, \text{flow\_count}, \text{ecn\_ratio}, \text{throughput}, \ldots]
+          \]
     \item 将这些异构信号通过可学习嵌入层映射为 Token 序列：
-      \[
-      E(s_t) = \text{Embed}(s_t) \in \mathbb{R}^{d}
-      \]
-    \item 这样，网络状态 → 语言 token → LLM 编码器  
-      （让 LLM 以“语言”方式理解网络动态）
+          \[
+            E(s_t) = \text{Embed}(s_t) \in \mathbb{R}^{d}
+          \]
+    \item 这样，数据实现了从 （网络状态） 到 （语言 token） 到 （LLM 编码器） 的转变
+          （让 LLM 以“语言”方式理解网络动态）
     \item 优点：
-      \begin{itemize}
-        \item 实现“网络信号到语言空间”的转化；
-        \item 为 LLM 的迁移和蒸馏奠定基础。
-      \end{itemize}
+          \begin{itemize}
+            \item 实现“网络信号到语言空间”的转化；
+            \item 为 LLM 的迁移和蒸馏奠定基础。
+          \end{itemize}
   \end{itemize}
-  \vspace{0.3cm}
-  \centering
-  % \includegraphics[width=0.6\textwidth]{example-image-a}
-  \captionof{figure}{状态编码示意}
 \end{frame}
 
 % --- 专用 LLM 头部 ---
 \begin{frame}{模块二：专用决策头（L4S-LLM Head）}
   \begin{itemize}
-    \item 替代传统“逐 token”生成模式，设计**直接动作预测头部**：
-      \[
-      \hat{y}_t = \text{Softmax}(W_o \cdot h_t)
-      \]
-      输出3类动作：
-      \begin{enumerate}
-        \item Enqueue（入队）
-        \item Drop（丢包）
-        \item ECN Mark（标记）
-      \end{enumerate}
+    \item 替代传统“逐 token”生成模式，设计"直接动作预测头部"：
+          \[
+            \hat{y}_t = \text{Softmax}(W_o \cdot h_t)
+          \]
+          输出3类动作：
+          \begin{enumerate}
+            \item Enqueue（入队）
+            \item Drop（丢包）
+            \item ECN Mark（标记）
+          \end{enumerate}
     \item \textbf{关键创新：}LLM 不再生成文本，而是一步输出决策，极大降低延迟。
-    \item 结合历史隐状态 $h_{t-1}$ 捕捉队列时序特征。
   \end{itemize}
   \vspace{0.3cm}
-  \textcolor{blue}{→ 从“语言生成”到“控制决策”的范式转变。}
+  \textcolor{blue}{ 从“语言生成”到“控制决策”的范式转变。}
+\end{frame}
+
+\begin{frame}{}
+  \centering
+  \includegraphics[height=0.9\textheight,keepaspectratio]{head.png}
+  \captionof{figure}{专用决策头}
 \end{frame}
 
 % --- 蒸馏与轻量化 ---
 \begin{frame}{模块三：LoRA 蒸馏与轻量化}
   \begin{columns}
-  \column{0.55\textwidth}
-  \begin{itemize}
-    \item 使用 \textbf{Low-Rank Adaptation (LoRA)} 对预训练 LLM 进行蒸馏：
-      \[
-      W' = W + A B^\top, \quad \text{rank}(A,B) \ll d
-      \]
-    \item 只训练 $A,B$，冻结原模型权重：
-      \begin{itemize}
-        \item 减少训练参数数十倍；
-        \item 支持边缘设备部署；
-        \item 保留大模型泛化能力。
-      \end{itemize}
-    \item 蒸馏目标：
-      \[
-      \mathcal{L}_{distill} = \|\hat{y}_{LLM} - y_{teacher}\|^2
-      \]
-  \end{itemize}
-  \column{0.45\textwidth}
-  \centering
-  % \includegraphics[width=0.95\textwidth]{example-image-b}
-  \captionof{figure}{LoRA 蒸馏示意}
+    \column{0.55\textwidth}
+    \begin{itemize}
+      \item 使用 \textbf{Low-Rank Adaptation (LoRA)} 对预训练 LLM 进行蒸馏：
+            \[
+              W' = W + A B^\top, \quad   r \ll  \text{min}(d,k)
+            \]
+      \item 只训练 $A,B$，冻结原模型权重：
+            \begin{itemize}
+              \item 减少训练参数数十倍；
+              \item 支持边缘设备部署；
+              \item 保留大模型泛化能力。
+            \end{itemize}
+    \end{itemize}
+    \column{0.45\textwidth}
+    \centering
+    \includegraphics[width=0.95\textwidth]{lora.png}
+    \captionof{figure}{LoRA 蒸馏示意}
   \end{columns}
 \end{frame}
 
-% --- 系统集成 ---
-\begin{frame}{模块四：系统集成与在线决策}
-  \begin{itemize}
-    \item L4S-LLM 嵌入路由器内核：
-      \begin{enumerate}
-        \item 内核采样网络状态；
-        \item 状态编码器 → LLM Head；
-        \item 输出动作 → 队列更新；
-      \end{enumerate}
-    \item 决策频率：每个 RTT 周期内数百次；
-    \item 推理延迟：低于 1 ms；
-    \item 兼容 L4S 标准接口（ECN 标记）。
-  \end{itemize}
-  \vspace{0.4cm}
-  \centering
-  % \includegraphics[width=0.7\textwidth]{example-image}
-  \captionof{figure}{L4S-LLM 在线部署流程}
-\end{frame}
 
 % =====================================================
 \section{实验与结果简述}
@@ -200,53 +187,51 @@
     \item 测试平台：FreeBSD + L4S 模块；
     \item 对比：传统 L4S vs L4S-LLM；
     \item \textbf{结果：}
-      \begin{itemize}
-        \item 平均队列延迟下降 35–50\%；  
-        \item 带宽利用率提升 ≈ 10\%；  
-        \item 丢包率下降显著；
-        \item 模型推理时间 < 1 ms。
-      \end{itemize}
+          \begin{itemize}
+            \item 平均队列延迟下降 35–50\%；
+            \item 带宽利用率提升 ≈ 10\%；
+          \end{itemize}
   \end{itemize}
-  \vspace{0.5cm}
-  \centering
-  % \includegraphics[width=0.75\textwidth]{example-image-duck}
-  \captionof{figure}{性能比较（论文 Fig.11–15）}
+  % \vspace{0.5cm}
+  % \centering
+  % % \includegraphics[width=0.75\textwidth]{example-image-duck}
+  % \captionof{figure}{性能比较（论文 Fig.11–15）}
 \end{frame}
 
-% =====================================================
-\section{讨论与启发}
-% =====================================================
-\begin{frame}{讨论与启发}
-  \begin{itemize}
-    \item \textbf{优势：}首次将 LLM 蒸馏用于实时网络控制任务；
-    \item \textbf{通用性：}框架可迁移至拥塞控制、调度、路由优化等；
-    \item \textbf{局限：}
-      \begin{itemize}
-        \item 仍依赖 GPU 加速；
-        \item 实际多路并发部署需进一步优化；
-      \end{itemize}
-    \item \textbf{对课题组的启发：}
-      \begin{itemize}
-        \item 可借鉴“LoRA 蒸馏 + 控制头部”思路；
-        \item 探索 LLM 在系统层实时控制中的落地。
-      \end{itemize}
-  \end{itemize}
-\end{frame}
+% % =====================================================
+% \section{讨论与启发}
+% % =====================================================
+% \begin{frame}{讨论与启发}
+%   \begin{itemize}
+%     \item \textbf{优势：}首次将 LLM 蒸馏用于实时网络控制任务；
+%     \item \textbf{通用性：}框架可迁移至拥塞控制、调度、路由优化等；
+%     \item \textbf{局限：}
+%           \begin{itemize}
+%             \item 仍依赖 GPU 加速；
+%             \item 实际多路并发部署需进一步优化；
+%           \end{itemize}
+%     \item \textbf{对课题组的启发：}
+%           \begin{itemize}
+%             \item 可借鉴“LoRA 蒸馏 + 控制头部”思路；
+%             \item 探索 LLM 在系统层实时控制中的落地。
+%           \end{itemize}
+%   \end{itemize}
+% \end{frame}
 
-\section{Q\&A}
-\begin{frame}{Q\&A}
-    \begin{itemize}
-            \item 看论文困难，一大堆的专业词汇，每个字都认识，放到一起就不认识了
-            \item 按照上次讨论的框架总结不出来，目前主要靠AI；自己总结的说是在总结，其实就是复制粘贴论文内容，越总结越多，自己都不想看
-            \item 挺多文章都有很好看的配图，他们是怎么画出来的
-        \end{itemize} 
-\end{frame}
+% \section{Q\&A}
+% \begin{frame}{Q\&A}
+%   \begin{itemize}
+%     \item 看论文困难，一大堆的专业词汇，每个字都认识，放到一起就不认识了
+%     \item 按照上次讨论的框架总结不出来，目前主要靠AI；自己总结的说是在总结，其实就是复制粘贴论文内容，越总结越多，自己都不想看
+%     \item 挺多文章都有很好看的配图，他们是怎么画出来的
+%   \end{itemize}
+% \end{frame}
 
 \begin{frame}
-    \Background
-    \begin{center}
-        {\Huge WELLCOME FEEDBACK!}
-    \end{center}
+  \Background
+  \begin{center}
+    {\Huge WELLCOME FEEDBACK!}
+  \end{center}
 \end{frame}
 
 \end{document}
